@@ -24,7 +24,8 @@
 - **No sample required:**
   - Generate YARA rules based solely on your own intelligence or requirements.
 
-- **All new code and prompts are in English.**
+  ![image](https://github.com/user-attachments/assets/07e33eed-24f8-4f38-8ca4-9f5b0aaf5c1e)
+
 
 ---
 
