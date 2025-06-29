@@ -16,8 +16,9 @@
   - The tool will interactively ask for:
     - Rule name
     - Strings (IOCs, domains, IPs, URLs, mutexes, registry keys, etc.)
-    - (Optional) Hex patterns
-    - (Optional) Condition
+    -  Hex patterns
+    -  Regex patterns
+    -  Condition
     - Meta information (description, author, reference, date, etc.)
     - Output file name
 
