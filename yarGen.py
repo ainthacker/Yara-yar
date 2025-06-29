@@ -339,7 +339,7 @@ def extract_strings(fileData) -> list[str]:
     return cleaned_strings
 
 
-def create_custom_rule(rule_name, strings, patterns=None, condition=None, meta=None, output_file=None):
+def create_custom_rule(rule_name, strings, patterns=None, regex_patterns=None, condition=None, meta=None, output_file=None):
     """
     Creates a custom YARA rule based on user input
     :param rule_name: Name of the rule
@@ -375,6 +375,15 @@ def create_custom_rule(rule_name, strings, patterns=None, condition=None, meta=N
         for i, pattern in enumerate(patterns):
             rule += "      $h%d = { %s }\n" % (i, pattern)
     
+    
+    # Add regex patterns if provided
+    if regex_patterns:
+         for i, regex_pattern in enumerate(regex_patterns):
+            rule += "      $r%d = /%s/ ascii\n" % (i, regex_pattern)
+  
+
+
+
     # Condition section
     rule += "   condition:\n"
     if condition:
@@ -412,9 +421,9 @@ def interactive_custom_rule():
     
     # Strings
     strings = []
-    print("\nEnter strings (one per line, empty line to finish):")
+    print("\nEnter text strings (one per line, empty line to finish):")
     while True:
-        string = input("String: ")
+        string = input("Text String: ")
         if not string:
             if not strings:
                 print("[-] You must enter at least one string!")
@@ -427,10 +436,19 @@ def interactive_custom_rule():
     print("\nEnter hex patterns (one per line, empty line to finish):")
     print("Example: 6A 40 68 00 30 00 00")
     while True:
-        pattern = input("Pattern: ")
+        pattern = input("Hex Pattern: ")
         if not pattern:
             break
         patterns.append(pattern)
+
+    regex_patterns = []
+    print("\nEnter regex patterns (one per line, empty line to finish):")
+    print("Example: ^[A-Za-z0-9]{32}$")
+    while True:
+        regex_pattern = input("Regex Pattern: ")
+        if not regex_pattern:
+            break
+        regex_patterns.append(regex_pattern)
     
     # Condition
     print("\nEnter custom condition (leave empty for 'any of them'):")
@@ -459,6 +477,7 @@ def interactive_custom_rule():
         rule_name=rule_name,
         strings=strings,
         patterns=patterns if patterns else None,
+        regex_patterns=regex_patterns if regex_patterns else None,
         condition=condition if condition else None,
         meta=meta,
         output_file=output_file
